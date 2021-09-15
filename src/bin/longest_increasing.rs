@@ -7,26 +7,18 @@ pub fn main() {
     println!("{:?}", result);
 }
 
-fn get_lm(arr: &[u16]) -> Vec<u16> {
-    let mut list = Vec::with_capacity(0);
-    for i in 0..arr.len() {
-        let max_sub = calc_max(arr, i);
-        if max_sub.len() > list.len() {
-            list = max_sub;
+fn get_lm(arr: &[u16]) -> usize {
+    let mut dp = vec![1; arr.len()];
+    let mut maxans = 1u16;
+    for i in 1..arr.len() {
+        dp[i] = 1;
+        for j in 0..i {
+            if arr[i] > arr[j] {
+                dp[i] = std::cmp::max(dp[i], dp[j] + 1);
+            }
         }
+        maxans = std::cmp::max(maxans, dp[i]);
+        //println!("dp {:?},", dp);
     }
-    list
-}
-
-fn calc_max(arr: &[u16], start_index: usize) -> Vec<u16> {
-    let mut list = Vec::new();
-    list.push(arr[start_index]);
-    for i in start_index..arr.len() {
-        let next = arr[i];
-        if next > list[list.len() - 1] {
-            list.push(next);
-        }
-    }
-
-    list
+    maxans as usize
 }

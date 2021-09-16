@@ -8,8 +8,8 @@ pub fn main() {
 }
 
 fn get_lm(arr: &[u16]) -> usize {
-    let mut dp = vec![1; arr.len()];
-    let mut maxans = 1u16;
+    let mut dp = vec![1usize; arr.len()];
+    let mut maxans = 1usize;
     for i in 1..arr.len() {
         dp[i] = 1;
         for j in 0..i {
@@ -20,5 +20,5 @@ fn get_lm(arr: &[u16]) -> usize {
         maxans = std::cmp::max(maxans, dp[i]);
         //println!("dp {:?},", dp);
     }
-    maxans as usize
+    maxans
 }

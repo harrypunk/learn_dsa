@@ -20,7 +20,7 @@ fn deduplicate(arr: &mut [u16]) -> usize {
     let len = arr.len();
     for right_index in 1..len {
         log::debug!("curr :{:?}, L:{}, R:{}", arr, left_index, right_index);
-        if right_index - left_index > 1 && arr[right_index] > arr[left_index] {
+        if arr[right_index] > arr[right_index - 1] {
             arr[left_index + 1] = arr[right_index];
             left_index += 1;
         }

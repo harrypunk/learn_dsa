@@ -9,11 +9,13 @@ pub mod dynamic {
         let mut j = 0usize;
 
         for i in 0..s.len() {
-            let current_arm_len: usize;
+            let mut current_arm_len: usize = 0;
             if right >= i {
-                let i_sym = j * 2 - i;
-                let min_arm_len = std::cmp::min(arm_len[i_sym], right - i);
-                current_arm_len = expand(&s, i - min_arm_len, i + min_arm_len);
+                if j > i - j {
+                    let i_sym = j * 2 - i;
+                    let min_arm_len = std::cmp::min(arm_len[i_sym], right - i);
+                    current_arm_len = expand(&s, i - min_arm_len, i + min_arm_len);
+                }
             } else {
                 current_arm_len = expand(&s, i, i);
             }
@@ -29,7 +31,7 @@ pub mod dynamic {
             }
         }
 
-        let augmented = s[start..end].to_string();
+        let augmented = s[start..end + 1].to_string();
         remove_holder(&augmented)
     }
 

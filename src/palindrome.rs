@@ -16,6 +16,16 @@ pub mod dynamic {
         (right - left - 2) / 2
     }
 
+    pub fn add_holder(s: &str) -> String {
+        let mut res = String::from('#');
+
+        for i in s.chars() {
+            res.push(i);
+            res.push('#')
+        }
+        res
+    }
+
     #[cfg(test)]
     mod tests {
         use super::*;
@@ -27,6 +37,13 @@ pub mod dynamic {
             assert_eq!(3, sub1);
             let sub2 = expand(s1, 4, 4);
             assert_eq!(3, sub2)
+        }
+
+        #[test]
+        fn dynamic_holder() {
+            let s1 = "abcd";
+            let s2 = add_holder(s1);
+            assert_eq!("#a#b#c#d#", s2)
         }
     }
 }

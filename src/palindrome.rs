@@ -1,21 +1,22 @@
-pub mod dynamic {
-    pub fn longest_pal(s: String) -> String {
+pub mod manacher {
+    pub fn longest_pal(old_s: String) -> String {
         let mut start = 0;
         let mut end = 0;
 
         let mut arm_len: Vec<usize> = Vec::new();
 
         let mut right = 0usize;
+        // center of lastest max palindrome
         let mut j = 0usize;
 
+        let s = add_holder(&old_s);
         for i in 0..s.len() {
-            let mut current_arm_len: usize = 0;
-            if right >= i {
-                if j > i - j {
-                    let i_sym = j * 2 - i;
-                    let min_arm_len = std::cmp::min(arm_len[i_sym], right - i);
-                    current_arm_len = expand(&s, i - min_arm_len, i + min_arm_len);
-                }
+            //log::debug!("i {}, j {}, right {}", i, j, right);
+            let current_arm_len: usize;
+            if right >= i && j > i - j {
+                let i_sym = j * 2 - i;
+                let min_arm_len = std::cmp::min(arm_len[i_sym], right - i);
+                current_arm_len = expand(&s, i - min_arm_len, i + min_arm_len);
             } else {
                 current_arm_len = expand(&s, i, i);
             }
@@ -39,13 +40,18 @@ pub mod dynamic {
      * expand and calc palindrome arm length
      * skip element within (left, right)
      */
-    pub fn expand(s: &str, mut left: usize, mut right: usize) -> usize {
+    pub fn expand(s: &str, l: usize, r: usize) -> usize {
+        let mut left = l;
+        let mut right = r;
         let bytes = s.as_bytes();
-        while right < s.len() && bytes[left] == bytes[right] {
+        while left != 0 && right < s.len() && bytes[left] == bytes[right] {
             left -= 1;
             right += 1;
         }
-        (right - left - 2) / 2
+        match right - left {
+            0 | 1 => 0,
+            x => (x - 2) / 2,
+        }
     }
 
     pub fn add_holder(s: &str) -> String {
@@ -72,6 +78,7 @@ pub mod dynamic {
     #[cfg(test)]
     mod tests {
         use super::*;
+        use flexi_logger::{Logger, WriteMode};
 
         #[test]
         fn dynamic_expand() {
@@ -93,9 +100,19 @@ pub mod dynamic {
 
         #[test]
         fn dynamic_pal() {
+            let _logger = Logger::try_with_env_or_str("debug")
+                .expect("logger env failed")
+                .write_mode(WriteMode::Async)
+                .log_to_stdout()
+                .start()
+                .expect("logger start error");
             let s1 = "acebabece";
             let res = longest_pal(s1.to_string());
             assert_eq!(res, "cebabec");
+
+            let s2 = "acabddbecabccbae";
+            let res2 = longest_pal(s2.to_string());
+            assert_eq!(res2, "abccba");
         }
     }
 }

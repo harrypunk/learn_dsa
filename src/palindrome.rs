@@ -27,7 +27,7 @@ pub mod manacher {
             }
 
             //{
-            //log::debug!("i {}, current_arm_len {}", i, current_arm_len);
+                //log::debug!("i {}, current_arm_len {}", i, current_arm_len);
             //}
 
             arm_len.push(current_arm_len);
@@ -42,7 +42,7 @@ pub mod manacher {
             }
         }
 
-        let augmented = s[start..end + 1].to_string();
+        let augmented = s[start..=end].to_string();
         remove_holder(&augmented)
     }
 
@@ -56,7 +56,7 @@ pub mod manacher {
         let bytes = s.as_bytes();
         while right < s.len() {
             if bytes[left] == bytes[right] {
-                if left == 0 || right == s.len() {
+                if left == 0 || right == s.len() - 1 {
                     break;
                 } else {
                     left -= 1;
@@ -134,12 +134,20 @@ pub mod manacher {
         #[test]
         fn mana_len2() {
             let leet162 = "bb";
-            //let res162 = longest_pal(leet162.to_string());
-            //assert_eq!("bb", res162);
+            let res162 = longest_pal(leet162.to_string());
+            assert_eq!("bb", res162);
             let exp = add_holder(leet162);
             assert_eq!("#b#b#", exp);
             let right = expand(&exp, 2, 2);
             assert_eq!(2, right);
+        }
+
+        #[test]
+        fn mana_159() {
+            //init_log();
+            let s = "cbbd";
+            let res = longest_pal(s.to_string());
+            assert_eq!("bb", res);
         }
     }
 }

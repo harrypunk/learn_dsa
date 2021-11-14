@@ -1,7 +1,7 @@
 pub mod manacher {
     pub fn longest_pal(s1: String) -> String {
         if s1.len() == 0 || s1.len() == 1 {
-            return s1
+            return s1;
         }
 
         let mut start = 0;
@@ -25,6 +25,11 @@ pub mod manacher {
             } else {
                 current_arm_len = expand(&s, i, i);
             }
+
+            //{
+            //log::debug!("i {}, current_arm_len {}", i, current_arm_len);
+            //}
+
             arm_len.push(current_arm_len);
             if i + current_arm_len > right {
                 j = i;
@@ -49,14 +54,26 @@ pub mod manacher {
         let mut left = l;
         let mut right = r;
         let bytes = s.as_bytes();
-        while left != 0 && right < s.len() && bytes[left] == bytes[right] {
-            left -= 1;
-            right += 1;
+        while right < s.len() {
+            if bytes[left] == bytes[right] {
+                if left == 0 || right == s.len() {
+                    break;
+                } else {
+                    left -= 1;
+                    right += 1;
+                }
+            } else {
+                left += 1;
+                right -= 1;
+                break;
+            }
         }
-        match right - left {
-            0 | 1 => 0,
-            x => (x - 2) / 2,
-        }
+        /*
+         * expand exits
+         * 1. char_left != char_right
+         * 2. char0 == char_len, s is palindome
+         */
+        (right - left) / 2
     }
 
     pub fn add_holder(s: &str) -> String {
@@ -83,10 +100,10 @@ pub mod manacher {
     #[cfg(test)]
     mod tests {
         use super::*;
-        use flexi_logger::{Logger, WriteMode};
+        //use crate::util::init_log;
 
         #[test]
-        fn dynamic_expand() {
+        fn mana_expand() {
             let s1 = "acebabece";
             let sub1 = expand(s1, 3, 5);
             assert_eq!(3, sub1);
@@ -95,7 +112,7 @@ pub mod manacher {
         }
 
         #[test]
-        fn dynamic_holder() {
+        fn mana_holder() {
             let s1 = "abcd";
             let s2 = add_holder(s1);
             assert_eq!("#a#b#c#d#", s2);
@@ -104,13 +121,7 @@ pub mod manacher {
         }
 
         #[test]
-        fn dynamic_pal() {
-            let _logger = Logger::try_with_env_or_str("debug")
-                .expect("logger env failed")
-                .write_mode(WriteMode::Async)
-                .log_to_stdout()
-                .start()
-                .expect("logger start error");
+        fn mana_pal() {
             let s1 = "acebabece";
             let res = longest_pal(s1.to_string());
             assert_eq!(res, "cebabec");
@@ -118,10 +129,17 @@ pub mod manacher {
             let s2 = "acabddbecabccbae";
             let res2 = longest_pal(s2.to_string());
             assert_eq!(res2, "abccba");
+        }
 
+        #[test]
+        fn mana_len2() {
             let leet162 = "bb";
-            let res162=longest_pal(leet162.to_string());
-            assert_eq!("bb", res162);
+            //let res162 = longest_pal(leet162.to_string());
+            //assert_eq!("bb", res162);
+            let exp = add_holder(leet162);
+            assert_eq!("#b#b#", exp);
+            let right = expand(&exp, 2, 2);
+            assert_eq!(2, right);
         }
     }
 }

@@ -1,5 +1,9 @@
 pub mod manacher {
-    pub fn longest_pal(old_s: String) -> String {
+    pub fn longest_pal(s1: String) -> String {
+        if s1.len() == 0 || s1.len() == 1 {
+            return s1
+        }
+
         let mut start = 0;
         let mut end = 0;
 
@@ -9,7 +13,7 @@ pub mod manacher {
         // center of lastest max palindrome
         let mut j = 0usize;
 
-        let s = add_holder(&old_s);
+        let s = add_holder(&s1);
         for i in 0..s.len() {
             //log::debug!("i {}, j {}, right {}", i, j, right);
             let current_arm_len: usize;
@@ -114,6 +118,10 @@ pub mod manacher {
             let s2 = "acabddbecabccbae";
             let res2 = longest_pal(s2.to_string());
             assert_eq!(res2, "abccba");
+
+            let leet162 = "bb";
+            let res162=longest_pal(leet162.to_string());
+            assert_eq!("bb", res162);
         }
     }
 }

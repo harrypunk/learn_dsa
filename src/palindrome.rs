@@ -18,7 +18,7 @@ pub mod manacher {
             //log::debug!("i {}, j {}, right {}", i, j, right);
             let current_arm_len: usize;
             // get min radius from symmetric i_sym
-            if right >= i && j > i - j {
+            if right >= i && j * 2 - i > 0 {
                 let i_sym = j * 2 - i;
                 let min_arm_len = std::cmp::min(arm_len[i_sym], right - i);
                 current_arm_len = expand(&s, i - min_arm_len, i + min_arm_len);
@@ -27,7 +27,7 @@ pub mod manacher {
             }
 
             //{
-                //log::debug!("i {}, current_arm_len {}", i, current_arm_len);
+            //log::debug!("i {}, current_arm_len {}", i, current_arm_len);
             //}
 
             arm_len.push(current_arm_len);

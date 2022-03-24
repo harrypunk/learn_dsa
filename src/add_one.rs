@@ -8,13 +8,13 @@ impl Solution {
             return digits;
         }
 
-        let mut result = vec![];
-        let mut i = digits.len() - 1;
+        let mut result = digits;
+        let mut i = result.len() - 1;
 
-        let n1 = digits[i] + 1;
+        let n1 = result[i] + 1;
         let mut carry = n1 / 10;
         let remainder1 = n1 % 10;
-        result.insert(0, remainder1);
+        result[i] = remainder1;
 
         loop {
             if i == 0 {
@@ -23,10 +23,10 @@ impl Solution {
                 i -= 1;
             }
 
-            let n = digits[i] + carry;
+            let n = result[i] + carry;
             let remainder = n % 10;
             carry = n / 10;
-            result.insert(0, remainder);
+            result[i] = remainder;
         }
 
         if carry > 0 {

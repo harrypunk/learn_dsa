@@ -1,8 +1,9 @@
 pub struct Solution;
+// https://leetcode-cn.com/problems/fizz-buzz/solution/bi-jiao-jian-ji-de-xie-fa-by-ignorant-k-yqur/
 
 impl Solution {
     pub fn fizz_buzz(n: i32) -> Vec<String> {
-        (1..n + 1)
+        (1..=n)
             .map(|x| {
                 let mut s = String::new();
                 if x % 3 == 0 {

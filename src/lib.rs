@@ -5,4 +5,5 @@ pub mod remove_duplicates;
 pub mod add_one;
 pub mod single_number;
 pub mod move_zeroes;
+pub mod fizzbuzz;
 mod util;

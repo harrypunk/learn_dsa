@@ -7,4 +7,5 @@ pub mod single_number;
 pub mod move_zeroes;
 pub mod fizzbuzz;
 pub mod intersection350;
+pub mod is_power_three_326;
 mod util;

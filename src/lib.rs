@@ -6,4 +6,5 @@ pub mod add_one;
 pub mod single_number;
 pub mod move_zeroes;
 pub mod fizzbuzz;
+pub mod intersection350;
 mod util;

@@ -4,23 +4,20 @@ pub struct Solution;
 
 impl Solution {
     pub fn intersect(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
+        if nums1.len() > nums2.len() {
+            return Solution::intersect(nums2, nums1);
+        }
         let mut elements: HashMap<i32, u16> = HashMap::new();
         let mut result = Vec::new();
 
-        let (arr1, arr2) = if nums1.len() > nums2.len() {
-            (nums2, nums1)
-        } else {
-            (nums1, nums2)
-        };
-
-        for v in arr1 {
+        for v in nums1 {
             if let Some(count) = elements.get_mut(&v) {
                 *count += 1;
             } else {
                 elements.insert(v, 1);
             }
         }
-        for v in arr2 {
+        for v in nums2 {
             if let Some(count) = elements.get_mut(&v) {
                 if *count > 0 {
                     result.push(v);

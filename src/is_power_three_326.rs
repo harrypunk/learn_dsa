@@ -4,7 +4,6 @@ impl Solution {
     pub fn is_power_of_three(mut n: i32) -> bool {
         while n > 0 && n % 3 == 0 {
             n /= 3;
-            println!("n {}",n);
         }
         n == 1
     }
